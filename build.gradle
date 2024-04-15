@@ -23,7 +23,6 @@ repositories {
 
 
 dependencies {
-    implementation 'org.json:json:20210307'
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -35,6 +34,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.5'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.17.2'
+    implementation group: 'org.json', name: 'json', version: '20240303'
 }
 
 
