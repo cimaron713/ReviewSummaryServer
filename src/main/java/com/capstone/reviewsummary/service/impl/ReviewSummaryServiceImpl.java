@@ -29,16 +29,6 @@ public class ReviewSummaryServiceImpl implements ReviewSummaryService {
         }
     }
 
-    @Override
-    public String sendMessageAtom(String atom){
-        try {
-            return makeReviewSummary(atom);
-        } catch (IOException e) {
-            return "An error occurred while sending the request: " + e.getMessage();
-        }
-    }
-
-
     private String sendRequest(String prompt) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost request = new HttpPost(API_URL);

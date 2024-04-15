@@ -1,6 +1,7 @@
 package com.capstone.reviewsummary.controller;
 
 import com.capstone.reviewsummary.apiPayload.ApiResponse;
+import com.capstone.reviewsummary.apiPayload.code.status.SuccessStatus;
 import com.capstone.reviewsummary.common.urlDTO;
 import com.capstone.reviewsummary.service.impl.ReviewSummaryServiceImpl;
 import com.capstone.reviewsummary.service.CrawlingService;
@@ -9,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-
-import static com.capstone.reviewsummary.apiPayload.code.status.SuccessStatus.SUCCESS_SUMMARY;
 
 @RestController
 @AllArgsConstructor
@@ -22,12 +21,12 @@ public class SummaryController {
     private final ReviewSummaryServiceImpl reviewSummaryService;
     @PostMapping("/smartstore")
     public ApiResponse<String> smartstoreSummary(@RequestBody urlDTO url) throws IOException {
-        return ApiResponse.of(SUCCESS_SUMMARY, reviewSummaryService.sendMessage(crawlingService.crawlReview(url.getUrl())));
+        return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, reviewSummaryService.sendMessage(crawlingService.crawlReview(url.getUrl())));
     }
 
     @PostMapping("/hingguri")
-    public String crawl(@RequestBody urlDTO url) throws IOException {
-        return crawlingService.crawlReview(url.getUrl());
+    public ApiResponse<String> crawl(@RequestBody urlDTO url) throws IOException {
+        return ApiResponse.of(SuccessStatus.SUCCESS_CRAWLING, crawlingService.crawlReview(url.getUrl()));
     }
 
 }

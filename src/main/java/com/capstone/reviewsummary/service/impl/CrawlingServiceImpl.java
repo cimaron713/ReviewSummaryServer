@@ -70,7 +70,7 @@ public class CrawlingServiceImpl implements CrawlingService {
 
             ///////////// 여기서 부터는 이제 리뷰 크롤링 ////////////
             Connection conn = Jsoup.connect(endPoint)
-                    .data("page", "2")
+                    .data("page", "1")
                     .data("pageSize", "30")
                     .data("checkoutMerchantNo", checkoutMerchantNo)
                     .data("originProductNo", originProductNo)
@@ -100,7 +100,7 @@ public class CrawlingServiceImpl implements CrawlingService {
                 review.add(reviewContent);
             }
 
-            return String.join(",",review);
+            return String.join("---",review);
 
         } catch (IOException e) {
             e.printStackTrace();

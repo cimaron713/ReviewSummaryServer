@@ -14,7 +14,8 @@ public enum SuccessStatus implements BaseCode {
     _OK(HttpStatus.OK, "COMMON2000", "성공입니다."),
 
     // 크롤링 성공 관련 응답
-    SUCCESS_SUMMARY(HttpStatus.OK, "COMMON2001", "리뷰 요약 성공");
+    SUCCESS_CRAWLING(HttpStatus.OK, "COMMON2001", "리뷰 가져오기 성공"),
+    SUCCESS_SUMMARY(HttpStatus.OK, "COMMON2002", "리뷰 요약 성공");
     // ~~~ 관련 응답
 
     private final HttpStatus httpStatus;
