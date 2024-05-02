@@ -1,6 +1,6 @@
 package com.capstone.reviewsummary.service.impl;
 
-import com.capstone.reviewsummary.common.ChatgptConfig;
+import com.capstone.reviewsummary.common.config.ChatgptConfig;
 import com.capstone.reviewsummary.service.ReviewSummaryService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
@@ -19,7 +19,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ReviewSummaryServiceImpl implements ReviewSummaryService {
     private final String API_URL = "https://api.openai.com/v1/chat/completions";
-
     @Override
     public String sendMessage(String review){
         try {
@@ -107,8 +106,6 @@ public class ReviewSummaryServiceImpl implements ReviewSummaryService {
                                 "4. 출력 형식은 '장점: ~\\n단점: ~\\n종합: ~~~\\n'을 무조건 지켜야한다.\\n"
                 """);
         messages.put(systemMessage);
-
-
         JSONObject userMessage = new JSONObject();
         userMessage.put("role", "user");
         userMessage.put("content", atom);
