@@ -5,6 +5,7 @@ import com.capstone.reviewsummary.apiPayload.code.status.SuccessStatus;
 import com.capstone.reviewsummary.common.urlDTO;
 import com.capstone.reviewsummary.service.impl.ReviewSummaryServiceImpl;
 import com.capstone.reviewsummary.service.CrawlingService;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,12 @@ public class SummaryController {
 
     @PostMapping("/hingguri")
     public ApiResponse<String> crawl(@RequestBody urlDTO url) throws IOException {
-        return ApiResponse.of(SuccessStatus.SUCCESS_CRAWLING, crawlingService.crawlReview(url.getUrl()));
+        String result  = crawlingService.crawlReview(url.getUrl());
+        if(result == null){
+            return ApiResponse.of(SuccessStatus.FAIL_CRAWLING, "힝구리요.");
+        }
+        else{
+            return ApiResponse.of(SuccessStatus.SUCCESS_CRAWLING, result);
+        }
     }
-
 }

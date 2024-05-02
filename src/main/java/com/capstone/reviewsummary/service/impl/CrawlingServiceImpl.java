@@ -18,8 +18,8 @@ public class CrawlingServiceImpl implements CrawlingService {
 
     @Override
     public String crawlReview(String url) throws IOException {
-        String endPoint = "https://smartstore.naver.com/i/v1/contents/reviews/query-pages";
-        String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15";
+        String endPoint = "http://smartstore.naver.com/i/v1/contents/reviews/query-pages";
+        String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15";
 
         // 리뷰 결과 저장 리스트.
         List<String> review = new ArrayList<>();
@@ -66,32 +66,36 @@ public class CrawlingServiceImpl implements CrawlingService {
             String originProductNo = data.getJSONObject("product").getJSONObject("A").getString("productNo");
             String checkoutMerchantNo = data.getJSONObject("smartStoreV2").getJSONObject("channel").getString("payReferenceKey");
 
-            ///////////// 종료 ////////////
-
             ///////////// 여기서 부터는 이제 리뷰 크롤링 ////////////
-            Connection conn = Jsoup.connect(endPoint)
+            Document html = Jsoup.connect(endPoint)
+                    .ignoreContentType(true)
+                    .header("Accept", "application/json, text/plain, */*")
+                    //.header("Accept-Encoding", "gzip, deflate, br, zstd")
+                    //.header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                    //.header("Connction","keep-alive")
+                    .header("Host", "smartstore.naver.com")
+                    //.header("Origin", "https://smartstore.naver.com")
+                    //.header("Referer", url)
+                    //.header("Sec-Fetch-Dest", "empty")
+                    //.header("Sec-Fetch-Mode", "cors")
+                    //.header("Sec-Fetch-Site", "same-origin")
+                    .userAgent(userAgent)
+                    //.header("x-client-version", "20240426145909")
                     .data("page", "1")
                     .data("pageSize", "30")
                     .data("checkoutMerchantNo", checkoutMerchantNo)
                     .data("originProductNo", originProductNo)
                     .data("reviewSearchSortType", "REVIEW_CREATE_DATE_DESC")
-                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15")
-                    //.header("Content-Type", "application/json")
-                    .ignoreContentType(true)
-                    .header("Host", "smartstore.naver.com")
-                    .header("Origin", "https://smartstore.naver.com")
-                    .header("Referer", url)
-                    .header("Accept", "application/json, text/plain, */*")
-                    .header("Accept-Language", "ko-KR,ko;q=0.9")
-                    .header("Connection", "keep-alive")
-                    .header("Accept-Encoding", "gzip, deflate, br")
-                    .method(Connection.Method.POST);
+                    .post();
 
-            Document html = conn.post(); // conn.post();
+            //Document html = conn.post(); // conn.post();
             Element body = html.body();
             String jsonData = body.text(); // JSON 데이터 추출
             JSONObject jsonObject = new JSONObject(jsonData);
             JSONArray contents = jsonObject.getJSONArray("contents");
+
+
+
 
             for (int i = 0; i < contents.length(); i++) {
                 JSONObject content = contents.getJSONObject(i);
