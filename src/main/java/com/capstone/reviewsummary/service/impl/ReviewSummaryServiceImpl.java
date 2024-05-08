@@ -38,7 +38,7 @@ public class ReviewSummaryServiceImpl implements ReviewSummaryService {
 
         // Set request body
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "ft:gpt-3.5-turbo-0125:personal::92YANpQz");
+        requestBody.put("model", "gpt-3.5-turbo-0125");
         JSONArray messages = new JSONArray();
 
         // Create system message
@@ -124,6 +124,7 @@ public class ReviewSummaryServiceImpl implements ReviewSummaryService {
         // Parse JSON response
 
         JSONObject jsonResponse = new JSONObject(responseBody);
+        System.out.println(jsonResponse);
         JSONArray choices = jsonResponse.getJSONArray("choices");
         JSONObject firstChoice = choices.getJSONObject(0);
 

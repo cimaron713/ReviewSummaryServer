@@ -1,8 +1,10 @@
 package com.capstone.reviewsummary.controller;
 
+import com.capstone.reviewsummary.Converter.SummaryConverter;
 import com.capstone.reviewsummary.apiPayload.ApiResponse;
 import com.capstone.reviewsummary.apiPayload.code.status.SuccessStatus;
 import com.capstone.reviewsummary.common.urlDTO;
+import com.capstone.reviewsummary.dto.ResponseDTO;
 import com.capstone.reviewsummary.service.impl.CacheService;
 import com.capstone.reviewsummary.service.impl.ReviewSummaryServiceImpl;
 import com.capstone.reviewsummary.service.CrawlingService;
@@ -21,12 +23,20 @@ import java.io.IOException;
 @Slf4j
 public class SummaryController {
     private final CacheService cacheService;
-
+    private final CrawlingService crawlingService;
     @PostMapping("/smartstore")
-    public ApiResponse<String> smartstoreSummary(@RequestBody urlDTO url) throws IOException {
+    public ApiResponse<ResponseDTO.SummaryResult> smartstoreSummary(@RequestBody urlDTO url) throws IOException {
+        return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, SummaryConverter.SummaryDivide(cacheService.cachingReview(url.getUrl())));
+    }
+    @PostMapping("/smartstore2")
+    public ApiResponse<String> smartstoreSummary2(@RequestBody urlDTO url) throws IOException {
         return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, cacheService.cachingReview(url.getUrl()));
     }
 
+    @PostMapping("/smartstore3")
+    public ApiResponse<String> coupangTest(@RequestBody urlDTO url) throws IOException {
+        return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, crawlingService.crawlCoupangReview(url.getUrl()));
+    }
 //    @PostMapping("/hingguri")
 //    public ApiResponse<String> crawl(@RequestBody urlDTO url) throws IOException {
 //        String result  = crawlingService.crawlReview(url.getUrl());

@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface CrawlingService {
     String crawlReview(String url) throws IOException;
+    String crawlCoupangReview(String url) throws IOException;
 }
