@@ -1,6 +1,7 @@
 package com.capstone.reviewsummary.service.impl;
 
 import com.capstone.reviewsummary.domain.Review;
+import com.capstone.reviewsummary.dto.RequestDTO;
 import com.capstone.reviewsummary.repository.ReviewRedisRepository;
 import com.capstone.reviewsummary.service.CrawlingService;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,19 @@ public class CacheService {
         }else{
             // 해당 상품의 리뷰 요약이 DB에 없는 경우
             String summary = reviewSummaryService.sendMessage(crawlingService.crawlReview(url));
+            reviewRedisRepository.save(new Review(productNo,summary));
+            return summary;
+        }
+    }
+    public String cachingSmartStoreReview(RequestDTO.SmartStoreRequestDTO smartStoreRequestDTO) throws IOException {
+        String productNo = parseProductNo(smartStoreRequestDTO.getOriginProductNo());
+
+        Optional<Review> review = reviewRedisRepository.findById(productNo);
+        if (review.isPresent()){
+            return review.get().getSummary();
+        }else{
+            // 해당 상품의 리뷰 요약이 DB에 없는 경우
+            String summary = reviewSummaryService.sendMessage(crawlingService.crawlSmartStoreReview(smartStoreRequestDTO));
             reviewRedisRepository.save(new Review(productNo,summary));
             return summary;
         }

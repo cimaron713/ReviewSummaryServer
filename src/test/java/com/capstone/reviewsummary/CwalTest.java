@@ -12,7 +12,11 @@ public class CwalTest {
 
     @Test
     void test() throws Exception{
-        crawlingService.crawlCoupangReview("https://www.coupang.com/vp/product/reviews?productId=7694805260&page=2&size=5&sortBy=ORDER_SCORE_ASC&ratings=&q=&viRoleCode=3&ratingSummary=true");
+        crawlingService.crawlCoupangReview("https://www.coupang.com/vp/product/reviews?productId=7694805260&page=1&size=30&sortBy=DATE_DESC");
+    }
+    @Test
+    void test2() throws Exception{
+        crawlingService.cookieCheck("https://www.coupang.com/vp/product/reviews?productId=7694805260&page=1&size=30&sortBy=DATE_DESC");
         System.out.println("CwalTest.test");
     }
 }
