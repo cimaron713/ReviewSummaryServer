@@ -112,7 +112,7 @@ public class CrawlingServiceImpl implements CrawlingService {
     }
     @Override
     public String crawlSmartStoreReview(RequestDTO.SmartStoreRequestDTO smartStoreRequestDTO) throws IOException{
-        String endPoint = "https://smartstore.naver.com/i/v1/contents/reviews/query-pages";
+        String endPoint = "http://smartstore.naver.com/i/v1/contents/reviews/query-pages";
         String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15";
 
         // 리뷰 결과 저장 리스트.
@@ -164,7 +164,7 @@ public class CrawlingServiceImpl implements CrawlingService {
     @Override
     public String crawlCoupangReview(RequestDTO.CoupangRequestDTO coupangRequestDTO) throws IOException {
         String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15";
-        String reviewUrl = "https://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
+        String reviewUrl = "http://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
         // 리뷰 결과 저장 리스트.
         List<String> review = new ArrayList<>();
         try {
@@ -177,7 +177,9 @@ public class CrawlingServiceImpl implements CrawlingService {
                 Document doc = Jsoup.connect(reviewUrl)
                         .userAgent(userAgent)
                         .cookie("x-coupang-accept-language", "ko-KR")
+                        .header("host","www.coupang.com")
                         .header("Referer", reviewUrl)
+                        .header("Accept","*/*")
                         .get();
 
                 // 리뷰 내용이 있는 모든 요소를 선택합니다.
