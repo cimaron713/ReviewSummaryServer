@@ -170,12 +170,11 @@ public class CrawlingServiceImpl implements CrawlingService {
         try {
             for(int i=1; i<4; i++) {
                 // url 처리
-                reviewUrl = "https://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
+                reviewUrl = "http://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
                 reviewUrl += Integer.toString(i);
                 System.out.println(reviewUrl);
                 // 상품 HTML - GET 요청
                 Document doc = Jsoup.connect(reviewUrl)
-                        .timeout(60000)
                         .userAgent(userAgent)
                         .cookie("x-coupang-accept-language", "ko-KR")
                         .header("host","www.coupang.com")
