@@ -31,14 +31,15 @@ public class SummaryController {
     public ApiResponse<ResponseDTO.SummaryResult> smartstoreSummaryTemp(@RequestBody urlDTO url) throws IOException {
         return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, SummaryConverter.SummaryDivide(cacheService.cachingReview(url.getUrl())));
     }
+
     @PostMapping("/smartstore")
     public ApiResponse<ResponseDTO.SummaryResult> smartstoreSummary(@RequestBody RequestDTO.SmartStoreRequestDTO SmartStoreRequestDTO) throws IOException {
         return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, SummaryConverter.SummaryDivide(cacheService.cachingSmartStoreReview(SmartStoreRequestDTO)));
     }
+
     @PostMapping("/coupang")
     public ApiResponse<ResponseDTO.SummaryResult> coupangSummary(@RequestBody RequestDTO.CoupangRequestDTO coupangRequestDTO) throws IOException {
         return ApiResponse.of(SuccessStatus.SUCCESS_SUMMARY, SummaryConverter.SummaryDivide(reviewSummaryService.sendMessage(crawlingService.crawlCoupangReview(coupangRequestDTO))));
 
     }
-
 }

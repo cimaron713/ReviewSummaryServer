@@ -17,7 +17,7 @@ public class CrawlingServiceImpl implements CrawlingService {
 
     @Override
     public String crawlReview(String url) throws IOException {
-        String endPoint = "https://smartstore.naver.com/i/v1/contents/reviews/query-pages";
+        String endPoint = "http://smartstore.naver.com/i/v1/contents/reviews/query-pages";
         String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15";
 
         // 리뷰 결과 저장 리스트.
@@ -175,6 +175,7 @@ public class CrawlingServiceImpl implements CrawlingService {
                 System.out.println(reviewUrl);
                 // 상품 HTML - GET 요청
                 Document doc = Jsoup.connect(reviewUrl)
+                        .timeout(60000)
                         .userAgent(userAgent)
                         .cookie("x-coupang-accept-language", "ko-KR")
                         .header("host","www.coupang.com")

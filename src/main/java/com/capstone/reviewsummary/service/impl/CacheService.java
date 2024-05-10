@@ -1,5 +1,6 @@
 package com.capstone.reviewsummary.service.impl;
 
+import com.capstone.reviewsummary.common.config.ChatgptConfig;
 import com.capstone.reviewsummary.domain.Review;
 import com.capstone.reviewsummary.dto.RequestDTO;
 import com.capstone.reviewsummary.repository.ReviewRedisRepository;
@@ -7,6 +8,14 @@ import com.capstone.reviewsummary.service.CrawlingService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,6 +25,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class CacheService {
+    //삭제요망
+    private final String API_URL = "https://api.openai.com/v1/chat/completions";
+
 
     private final ReviewRedisRepository reviewRedisRepository;
     private final CrawlingService crawlingService;
