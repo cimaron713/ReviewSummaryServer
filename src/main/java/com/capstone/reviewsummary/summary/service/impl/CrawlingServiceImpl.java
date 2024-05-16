@@ -1,6 +1,6 @@
-package com.capstone.reviewsummary.service.impl;
-import com.capstone.reviewsummary.dto.RequestDTO;
-import com.capstone.reviewsummary.service.CrawlingService;
+package com.capstone.reviewsummary.summary.service.impl;
+import com.capstone.reviewsummary.summary.dto.RequestDTO;
+import com.capstone.reviewsummary.summary.service.CrawlingService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -10,8 +10,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 

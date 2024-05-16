@@ -1,21 +1,11 @@
-package com.capstone.reviewsummary.service.impl;
+package com.capstone.reviewsummary.summary.service.impl;
 
-import com.capstone.reviewsummary.common.config.ChatgptConfig;
-import com.capstone.reviewsummary.domain.Review;
-import com.capstone.reviewsummary.dto.RequestDTO;
-import com.capstone.reviewsummary.repository.ReviewRedisRepository;
-import com.capstone.reviewsummary.service.CrawlingService;
-import lombok.AllArgsConstructor;
+import com.capstone.reviewsummary.summary.domain.Review;
+import com.capstone.reviewsummary.summary.dto.RequestDTO;
+import com.capstone.reviewsummary.summary.repository.ReviewRedisRepository;
+import com.capstone.reviewsummary.summary.service.CrawlingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

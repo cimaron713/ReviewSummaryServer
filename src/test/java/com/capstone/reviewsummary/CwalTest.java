@@ -1,7 +1,6 @@
 package com.capstone.reviewsummary;
 
-import com.capstone.reviewsummary.service.CrawlingService;
-import org.junit.jupiter.api.Test;
+import com.capstone.reviewsummary.summary.service.CrawlingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

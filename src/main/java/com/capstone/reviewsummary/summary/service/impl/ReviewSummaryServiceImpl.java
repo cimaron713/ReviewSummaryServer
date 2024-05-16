@@ -1,7 +1,7 @@
-package com.capstone.reviewsummary.service.impl;
+package com.capstone.reviewsummary.summary.service.impl;
 
 import com.capstone.reviewsummary.common.config.ChatgptConfig;
-import com.capstone.reviewsummary.service.ReviewSummaryService;
+import com.capstone.reviewsummary.summary.service.ReviewSummaryService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

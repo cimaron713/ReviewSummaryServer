@@ -1,19 +1,16 @@
-package com.capstone.reviewsummary.controller;
+package com.capstone.reviewsummary.summary.controller;
 
-import com.capstone.reviewsummary.Converter.SummaryConverter;
+import com.capstone.reviewsummary.summary.converter.SummaryConverter;
 import com.capstone.reviewsummary.apiPayload.ApiResponse;
 import com.capstone.reviewsummary.apiPayload.code.status.SuccessStatus;
 import com.capstone.reviewsummary.common.urlDTO;
-import com.capstone.reviewsummary.dto.RequestDTO;
-import com.capstone.reviewsummary.dto.ResponseDTO;
-import com.capstone.reviewsummary.service.ReviewSummaryService;
-import com.capstone.reviewsummary.service.impl.CacheService;
-import com.capstone.reviewsummary.service.impl.ReviewSummaryServiceImpl;
-import com.capstone.reviewsummary.service.CrawlingService;
-import jakarta.validation.constraints.Null;
+import com.capstone.reviewsummary.summary.dto.RequestDTO;
+import com.capstone.reviewsummary.summary.dto.ResponseDTO;
+import com.capstone.reviewsummary.summary.service.ReviewSummaryService;
+import com.capstone.reviewsummary.summary.service.impl.CacheService;
+import com.capstone.reviewsummary.summary.service.CrawlingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

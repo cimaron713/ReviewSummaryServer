@@ -1,6 +1,6 @@
-package com.capstone.reviewsummary.Converter;
+package com.capstone.reviewsummary.summary.converter;
 
-import com.capstone.reviewsummary.dto.ResponseDTO;
+import com.capstone.reviewsummary.summary.dto.ResponseDTO;
 
 public class SummaryConverter {
     public static ResponseDTO.SummaryResult SummaryDivide(String summary){

@@ -1,7 +1,7 @@
 package com.capstone.reviewsummary;
 
-import com.capstone.reviewsummary.domain.Review;
-import com.capstone.reviewsummary.repository.ReviewRedisRepository;
+import com.capstone.reviewsummary.summary.domain.Review;
+import com.capstone.reviewsummary.summary.repository.ReviewRedisRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

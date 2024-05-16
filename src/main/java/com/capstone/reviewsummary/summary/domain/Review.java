@@ -1,4 +1,4 @@
-package com.capstone.reviewsummary.domain;
+package com.capstone.reviewsummary.summary.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
