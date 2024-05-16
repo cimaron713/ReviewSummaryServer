@@ -1,9 +1,8 @@
-package com.capstone.reviewsummary.service;
+package com.capstone.reviewsummary.summary.service;
 
-import com.capstone.reviewsummary.dto.RequestDTO;
+import com.capstone.reviewsummary.summary.dto.RequestDTO;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface CrawlingService {
     String crawlReview(String url) throws IOException;

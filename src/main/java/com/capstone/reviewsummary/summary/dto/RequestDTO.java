@@ -1,4 +1,4 @@
-package com.capstone.reviewsummary.dto;
+package com.capstone.reviewsummary.summary.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
