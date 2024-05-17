@@ -57,7 +57,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers( "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**",
+                        .requestMatchers( "/**","/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**",
                                 "/social/**", "/user/login", "/user/join", "/api-docs", "/v3/**","/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**"
                         ).permitAll()
                         .requestMatchers("/sign-up").permitAll()

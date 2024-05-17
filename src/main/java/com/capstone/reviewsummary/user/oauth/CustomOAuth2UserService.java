@@ -29,7 +29,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.info("CustomOAuth2UserService.loadUser() 실행 - OAuth2 로그인 요청 진입");
 
-        /*
+        /**
          * DefaultOAuth2UserService 객체를 생성하여, loadUser(userRequest)를 통해 DefaultOAuth2User 객체를 생성 후 반환
          * DefaultOAuth2UserService의 loadUser()는 소셜 로그인 API의 사용자 정보 제공 URI로 요청을 보내서
          * 사용자 정보를 얻은 후, 이를 통해 DefaultOAuth2User 객체를 생성 후 반환한다.
@@ -38,7 +38,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        /*
+        /**
          * userRequest에서 registrationId 추출 후 registrationId으로 SocialType 저장
          * http://localhost:8080/oauth2/authorization/kakao에서 kakao가 registrationId
          * userNameAttributeName은 이후에 nameAttributeKey로 설정된다.

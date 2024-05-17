@@ -125,7 +125,7 @@ public class CrawlingServiceImpl implements CrawlingService {
                         .header("Accept", "application/json, text/plain, */*")
                         .header("Host", "smartstore.naver.com")
                         .userAgent(userAgent)
-                        .data("page", "1")
+                        .data("page", Integer.toString(a))
                         .data("pageSize", "30")
                         .data("checkoutMerchantNo", smartStoreRequestDTO.getCheckoutMerchantNo())
                         .data("originProductNo", smartStoreRequestDTO.getOriginProductNo())
