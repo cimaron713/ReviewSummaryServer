@@ -1,6 +1,7 @@
 package com.capstone.reviewsummary.summary.service.impl;
 import com.capstone.reviewsummary.summary.dto.RequestDTO;
 import com.capstone.reviewsummary.summary.service.CrawlingService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
+@Slf4j
 public class CrawlingServiceImpl implements CrawlingService {
 
     @Override
@@ -155,49 +158,124 @@ public class CrawlingServiceImpl implements CrawlingService {
 
     @Override
     public String crawlCoupangReview(RequestDTO.CoupangRequestDTO coupangRequestDTO) throws IOException {
-        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0120.0.0.0 Safari/537.36";
-        String reviewUrl = "http://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
+        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0120.0.0 Safari/537.36";
+        String reviewUrlTemplate = "http://www.coupang.com/vp/product/reviews?productId=" + coupangRequestDTO.getProductNo() + "&size=30&sortBy=DATE_DESC&page=";
 
         // 리뷰 결과 저장 리스트.
-        List<String> review = new ArrayList<>();
+        List<String> meaningfulReviews = new ArrayList<>();
+        int page = 1;
+        int totalReviewLength = 0;
+        Random random = new Random();
+
         try {
-            for(int i=1; i<4; i++) {
-                // url 처리
-                reviewUrl = "http://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
-                reviewUrl += Integer.toString(i);
+            while (meaningfulReviews.size() < 100 && totalReviewLength < 6000 ) {
+
+
+                try {
+                    int sleepTime = 300 + random.nextInt(101);
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                String reviewUrl = reviewUrlTemplate + page;
                 System.out.println(reviewUrl);
+
                 // 상품 HTML - GET 요청
                 Document doc = Jsoup.connect(reviewUrl)
-                        //.timeout(60000)
                         .userAgent(userAgent)
                         .cookie("x-coupang-accept-language", "ko-KR")
-                        .cookie("x-coupang-target-market","KR")
+                        .cookie("x-coupang-target-market", "KR")
                         .ignoreContentType(true)
-                        .header("Accept","*/*")
-                        .header("Accept-Language","ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
-                        .header("Accept-Encoding","gzip, deflate, br")
-                        .header("Connection","keep-alive")
-                        //.header("Cookie","x-coupang-accept-language")
-                        .header("host","www.coupang.com")
+                        .header("Accept", "*/*")
+                        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+                        .header("Accept-Encoding", "gzip, deflate, br")
+                        .header("Connection", "keep-alive")
+                        .header("host", "www.coupang.com")
                         .header("Referer", reviewUrl)
                         .get();
 
                 // 리뷰 내용이 있는 모든 요소를 선택합니다.
                 Elements reviewElements = doc.select(".sdp-review__article__list__review__content");
 
+                if (reviewElements.isEmpty()) {
+                    // 더 이상 리뷰가 없으면 종료
+                    break;
+                }
+
                 // 선택된 모든 요소에서 텍스트를 추출합니다.
                 for (Element reviewElement : reviewElements) {
+
                     String reviewContent = reviewElement.text();
-                    System.out.println(reviewContent);
-                    review.add(reviewContent);
+
+                    if (reviewContent.length() >= 10) {
+                        meaningfulReviews.add(reviewContent);
+                        totalReviewLength += reviewContent.length();
+                    }
+
+                    if (meaningfulReviews.size() >= 100 && totalReviewLength >= 6000) {
+                        break;
+                    }
                 }
+
+                page++;
             }
-            System.out.println(review);
-            return String.join("---",review);
+
+            System.out.println(meaningfulReviews);
+            return String.join("---", meaningfulReviews);
 
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
+
+//
+//    @Override
+//    public String crawlCoupangReview(RequestDTO.CoupangRequestDTO coupangRequestDTO) throws IOException {
+//        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0120.0.0.0 Safari/537.36";
+//        String reviewUrl = "http://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
+//
+//        // 리뷰 결과 저장 리스트.
+//        List<String> review = new ArrayList<>();
+//        try {
+//            for(int i=1; i<4; i++) {
+//                // url 처리
+//                reviewUrl = "http://www.coupang.com/vp/product/reviews?productId="+coupangRequestDTO.getProductNo()+"&size=30&sortBy=DATE_DESC&page=";
+//                reviewUrl += Integer.toString(i);
+//                System.out.println(reviewUrl);
+//                // 상품 HTML - GET 요청
+//                Document doc = Jsoup.connect(reviewUrl)
+//                        //.timeout(60000)
+//                        .userAgent(userAgent)
+//                        .cookie("x-coupang-accept-language", "ko-KR")
+//                        .cookie("x-coupang-target-market","KR")
+//                        .ignoreContentType(true)
+//                        .header("Accept","*/*")
+//                        .header("Accept-Language","ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+//                        .header("Accept-Encoding","gzip, deflate, br")
+//                        .header("Connection","keep-alive")
+//                        //.header("Cookie","x-coupang-accept-language")
+//                        .header("host","www.coupang.com")
+//                        .header("Referer", reviewUrl)
+//                        .get();
+//
+//                // 리뷰 내용이 있는 모든 요소를 선택합니다.
+//                Elements reviewElements = doc.select(".sdp-review__article__list__review__content");
+//
+//                // 선택된 모든 요소에서 텍스트를 추출합니다.
+//                for (Element reviewElement : reviewElements) {
+//                    String reviewContent = reviewElement.text();
+//                    System.out.println(reviewContent);
+//                    review.add(reviewContent);
+//                }
+//            }
+//            System.out.println(review);
+//            return String.join("---",review);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 }

@@ -15,43 +15,36 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class CacheService {
-    //삭제요망
-    private final String API_URL = "https://api.openai.com/v1/chat/completions";
-
 
     private final ReviewRedisRepository reviewRedisRepository;
     private final CrawlingService crawlingService;
     private final ReviewSummaryServiceImpl reviewSummaryService;
 
-    private String parseProductNo(String url){
-        String productNo = url.replaceAll(".*/products/(\\d+)", "$1");
-        return productNo;
-    }
+    public String cachingCoupangReview(RequestDTO.CoupangRequestDTO coupangRequestDTO) throws IOException{
+        String redisId = Review.generateId(coupangRequestDTO.getProductNo(),"coupang");
+        Optional<Review> review = reviewRedisRepository.findById(redisId);
 
-    //url로부터 상품번호를 파싱후 해당 상품의 요약이 DB에 저장되어있는지 확인한다.
-    public String cachingReview(String url) throws IOException {
-        String productNo = parseProductNo(url);
-
-        Optional<Review> review = reviewRedisRepository.findById(productNo);
         if (review.isPresent()){
             return review.get().getSummary();
         }else{
             // 해당 상품의 리뷰 요약이 DB에 없는 경우
-            String summary = reviewSummaryService.sendMessage(crawlingService.crawlReview(url));
-            reviewRedisRepository.save(new Review(productNo,summary));
+            String summary = reviewSummaryService.sendMessage(crawlingService.crawlCoupangReview(coupangRequestDTO));
+            reviewRedisRepository.save(new Review(coupangRequestDTO.getProductNo(),"coupang",summary));
             return summary;
         }
     }
-    public String cachingSmartStoreReview(RequestDTO.SmartStoreRequestDTO smartStoreRequestDTO) throws IOException {
-        String productNo = parseProductNo(smartStoreRequestDTO.getOriginProductNo());
 
-        Optional<Review> review = reviewRedisRepository.findById(productNo);
+    public String cachingSmartStoreReview(RequestDTO.SmartStoreRequestDTO smartStoreRequestDTO) throws IOException {
+
+        String redisId = Review.generateId(smartStoreRequestDTO.getOriginProductNo(),"smartstore");
+        Optional<Review> review = reviewRedisRepository.findById(redisId);
+
         if (review.isPresent()){
             return review.get().getSummary();
         }else{
             // 해당 상품의 리뷰 요약이 DB에 없는 경우
             String summary = reviewSummaryService.sendMessage(crawlingService.crawlSmartStoreReview(smartStoreRequestDTO));
-            reviewRedisRepository.save(new Review(productNo,summary));
+            reviewRedisRepository.save(new Review(smartStoreRequestDTO.getOriginProductNo(),"smartstore",summary));
             return summary;
         }
     }

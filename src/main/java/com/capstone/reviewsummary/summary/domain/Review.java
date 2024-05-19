@@ -18,14 +18,20 @@ import java.time.LocalDateTime;
 public class Review {
 
     @Id
+    private String id;
     private String productNo;
+    private String brand;
     private String summary;
     private LocalDateTime createdAt;
 
-    public Review(String productNo,String summary){
+    public Review(String productNo, String brand, String summary) {
+        this.id = generateId(productNo, brand);
         this.productNo = productNo;
+        this.brand = brand;
         this.summary = summary;
         this.createdAt = LocalDateTime.now();
     }
-
+    public static String generateId(String productNo, String brand) {
+        return brand + ":" + productNo;
+    }
 }
