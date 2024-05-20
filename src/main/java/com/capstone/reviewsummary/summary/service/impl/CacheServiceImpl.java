@@ -3,7 +3,9 @@ package com.capstone.reviewsummary.summary.service.impl;
 import com.capstone.reviewsummary.summary.domain.Review;
 import com.capstone.reviewsummary.summary.dto.RequestDTO;
 import com.capstone.reviewsummary.summary.repository.ReviewRedisRepository;
+import com.capstone.reviewsummary.summary.service.CacheService;
 import com.capstone.reviewsummary.summary.service.CrawlingService;
+import com.capstone.reviewsummary.summary.service.ReviewSummaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CacheService {
+public class CacheServiceImpl implements CacheService {
 
     private final ReviewRedisRepository reviewRedisRepository;
     private final CrawlingService crawlingService;
-    private final ReviewSummaryServiceImpl reviewSummaryService;
+    private final ReviewSummaryService reviewSummaryService;
 
     public String cachingCoupangReview(RequestDTO.CoupangRequestDTO coupangRequestDTO) throws IOException{
         String redisId = Review.generateId(coupangRequestDTO.getProductNo(),"coupang");
