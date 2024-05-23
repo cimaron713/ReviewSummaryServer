@@ -135,8 +135,12 @@ public class CrawlingServiceImpl implements CrawlingService {
                         .data("reviewSearchSortType", "REVIEW_CREATE_DATE_DESC")
                         .post();
 
+
                 Element body = html.body();
                 String jsonData = body.text(); // JSON 데이터 추출
+                if(jsonData.isEmpty()){
+                    break;
+                }
                 JSONObject jsonObject = new JSONObject(jsonData);
                 JSONArray contents = jsonObject.getJSONArray("contents");
 
