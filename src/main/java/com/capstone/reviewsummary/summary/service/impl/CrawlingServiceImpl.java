@@ -173,8 +173,6 @@ public class CrawlingServiceImpl implements CrawlingService {
 
         try {
             while (meaningfulReviews.size() < 100 && totalReviewLength < 6000 ) {
-
-
                 try {
                     int sleepTime = 300 + random.nextInt(101);
                     Thread.sleep(sleepTime);
