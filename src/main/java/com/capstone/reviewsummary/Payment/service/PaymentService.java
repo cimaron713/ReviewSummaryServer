@@ -1,5 +1,6 @@
 package com.capstone.reviewsummary.Payment.service;
 
+import com.capstone.reviewsummary.Payment.dto.PayReadyResponseDTO;
 import com.capstone.reviewsummary.Payment.service.strategy.PaymentStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class PaymentService {
         return paymentStrategyMap.get(brand);
     }
 
-    public void createPay(String brand){
-        log.info(getStrategy(brand).pay());
+    public PayReadyResponseDTO readyPay(String brand){
+        return getStrategy(brand).readyPay();
     }
 }

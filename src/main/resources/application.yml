@@ -14,5 +14,16 @@ spring:
     host: localhost
     port: 6379
 
+  kakaopay:
+    secretkey: PRDC97966E4D1496BD46B4A1E9509BFE170E1AE9
+    devsecretkey : DEV2A561C27ACA8A9EDA7D333AF3EBF5507813D1
+    readyURL: https://open-api.kakaopay.com/online/v1/payment/ready
+
+
+
+
+
+
+
 
 

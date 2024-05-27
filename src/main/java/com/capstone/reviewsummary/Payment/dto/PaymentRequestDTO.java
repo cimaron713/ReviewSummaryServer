@@ -1,2 +1,10 @@
 package com.capstone.reviewsummary.Payment.dto;
-public record PaymentRequestDTO(String brand) {}
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+public class PaymentRequestDTO{
+    private String brand;
+}

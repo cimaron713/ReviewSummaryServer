@@ -1,5 +1,7 @@
 package com.capstone.reviewsummary.Payment.service.strategy;
 
-public interface PaymentStrategy {
-    String pay();
+import com.capstone.reviewsummary.Payment.dto.PayReadyResponseDTO;
+
+public interface PaymentStrategy{
+    PayReadyResponseDTO readyPay();
 }

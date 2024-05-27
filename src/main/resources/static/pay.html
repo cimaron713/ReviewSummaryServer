@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page</title>
+</head>
+<body>
+<h1>API Test Page</h1>
+<button id="sendRequest">Send POST Request</button>
+
+<script>
+    document.getElementById('sendRequest').addEventListener('click', () => {
+        const data = { brand: "kakao" };
+
+        fetch('http://localhost:8080/payments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Request successful: ' + JSON.stringify(data));
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Request failed: ' + error);
+            });
+    });
+</script>
+</body>
+</html>
