@@ -1,11 +1,14 @@
 package com.capstone.reviewsummary.Payment.service;
 
+import com.capstone.reviewsummary.Payment.domain.Orders;
 import com.capstone.reviewsummary.Payment.dto.PayReadyResponseDTO;
 import com.capstone.reviewsummary.Payment.service.strategy.PaymentStrategy;
+import com.capstone.reviewsummary.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
@@ -19,7 +22,8 @@ public class PaymentService {
         return paymentStrategyMap.get(brand);
     }
 
-    public PayReadyResponseDTO readyPay(String brand){
-        return getStrategy(brand).readyPay();
+    public PayReadyResponseDTO readyPay(String brand,Long userId){
+        return getStrategy(brand).readyPay(userId,brand);
     }
+
 }

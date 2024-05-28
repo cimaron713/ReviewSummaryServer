@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service("toss")
 public class TossStrategy implements PaymentStrategy{
     @Override
-    public TossPayReadyResponseDTO readyPay(){
+    public TossPayReadyResponseDTO readyPay(Long userId,String brand){
         return new TossPayReadyResponseDTO();
     }
 }

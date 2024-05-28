@@ -17,7 +17,7 @@ public class PaymentController {
 
     @PostMapping("/payments")
     public PayReadyResponseDTO readyPayment(@RequestBody PaymentRequestDTO paymentRequestDTO){
-        log.info(paymentRequestDTO.toString() + "컨트롤러");
-        return paymentService.readyPay(paymentRequestDTO.getBrand());
+        long userId = 1;
+        return paymentService.readyPay(paymentRequestDTO.getBrand(),userId);
     }
 }
