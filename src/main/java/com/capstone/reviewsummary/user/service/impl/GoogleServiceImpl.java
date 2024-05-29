@@ -1,5 +1,6 @@
 package com.capstone.reviewsummary.user.service.impl;
 
+import com.capstone.reviewsummary.user.dto.GoogleDto;
 import com.capstone.reviewsummary.user.dto.GoogleSignUpDto;
 import com.capstone.reviewsummary.user.dto.UserResponseDTO;
 import com.capstone.reviewsummary.user.service.GoogleService;
@@ -19,9 +20,8 @@ import org.springframework.web.client.RestTemplate;
 @Transactional
 @RequiredArgsConstructor
 public class GoogleServiceImpl implements GoogleService {
-    private final UserService userService;
-
-    public UserResponseDTO.ResponseDTO getGoogleAccessToken(String accessCode) {
+    @Override
+    public GoogleDto.UserInfoDto getUserInfoGoogle(String accessCode) {
         String GOOGLE_TOKEN_URL = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
         GOOGLE_TOKEN_URL += accessCode;
         RestTemplate restTemplate = new RestTemplate();
@@ -39,23 +39,19 @@ public class GoogleServiceImpl implements GoogleService {
                 String name = jsonNode.get("name").asText();
                 String pictureUrl = jsonNode.get("picture").asText();
 
-                GoogleSignUpDto googleSignUpDto = GoogleSignUpDto.builder()
+                return GoogleDto.UserInfoDto.builder()
                         .socialId(googleUserId)
                         .name(name)
                         .pictureUrl(pictureUrl)
                         .build();
 
-                if(!userService.checkUser(googleUserId)){
-                    userService.googleSignUp(googleSignUpDto);
-                }
-                return userService.login(googleUserId);
             } catch (Exception e) {
-                // 예외 처리
                 e.printStackTrace();
             }
         }
-
-
+        else{
+            log.info("Wrong Access Code Exception");
+        }
         return null;
     }
 }

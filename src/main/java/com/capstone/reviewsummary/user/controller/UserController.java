@@ -1,22 +1,41 @@
 package com.capstone.reviewsummary.user.controller;
 
-
+import com.capstone.reviewsummary.user.dto.UserResponseDTO;
 import com.capstone.reviewsummary.user.service.UserService;
-import com.capstone.reviewsummary.user.dto.UserSignUpDto;
+import com.capstone.reviewsummary.user.service.impl.GoogleServiceImpl;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/login")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@Slf4j
 public class UserController {
-
+    //private final GoogleServiceImpl googleService;
     private final UserService userService;
-    @PostMapping("/sign-up")
-    public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
-        //userService.signUp(userSignUpDto);
-        return "회원가입 성공";
+//    @GetMapping("/google")
+//    public UserResponseDTO.ResponseDTO GoogleLogin (@RequestParam("code") String code, HttpServletResponse response) {
+//        UserResponseDTO.ResponseDTO result = googleService.getGoogleAccessToken(code);
+//        Cookie cookie = new Cookie("access_token", result.getTokenDTO().getAccessToken());
+//        cookie.setMaxAge(60*60*24*7);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
+//        return result;
+//    }
+
+    @GetMapping("/google")
+    public UserResponseDTO.ResponseDTO GoogleLogin (@RequestParam("code") String code, HttpServletResponse response) {
+        UserResponseDTO.ResponseDTO result = userService.login(code);
+        Cookie cookie = new Cookie("access_token", result.getTokenDTO().getAccessToken());
+        cookie.setMaxAge(60*60*24*7);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return result;
     }
 }
