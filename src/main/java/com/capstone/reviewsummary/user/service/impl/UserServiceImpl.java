@@ -1,12 +1,14 @@
 package com.capstone.reviewsummary.user.service.impl;
 
-import com.capstone.reviewsummary.user.entity.Role;
+import com.capstone.reviewsummary.security.JwtProvider;
+import com.capstone.reviewsummary.security.TokenDTO;
+import com.capstone.reviewsummary.user.converter.UserConverter;
+import com.capstone.reviewsummary.user.dto.GoogleSignUpDto;
+import com.capstone.reviewsummary.user.dto.UserResponseDTO;
 import com.capstone.reviewsummary.user.entity.User;
 import com.capstone.reviewsummary.user.repository.UserRepository;
-import com.capstone.reviewsummary.user.dto.UserSignUpDto;
 import com.capstone.reviewsummary.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,28 +16,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public void signUp(UserSignUpDto userSignUpDto) throws Exception {
-
-        if (userRepository.findByEmail(userSignUpDto.getEmail()).isPresent()) {
-            throw new Exception("이미 존재하는 이메일입니다.");
-        }
-
-        if (userRepository.findByNickname(userSignUpDto.getNickname()).isPresent()) {
-            throw new Exception("이미 존재하는 닉네임입니다.");
-        }
-
+    private final JwtProvider jwtProvider;
+    @Override
+    public boolean checkUser(String userId){
+        return userRepository.findBySocialId(userId).isPresent();
+    }
+    @Override
+    public void googleSignUp(GoogleSignUpDto googleSignUpDto){
         User user = User.builder()
-                .email(userSignUpDto.getEmail())
-                .password(userSignUpDto.getPassword())
-                .nickname(userSignUpDto.getNickname())
-                .role(Role.USER)
-                .build();
-
-        user.passwordEncode(passwordEncoder);
+                .socialId(googleSignUpDto.getSocialId())
+                .imageUrl(googleSignUpDto.getPictureUrl())
+                .nickname(googleSignUpDto.getName()).build();
         userRepository.save(user);
+    }
+
+    @Override
+    public UserResponseDTO.ResponseDTO login(String userId){
+        User user = userRepository.findBySocialId(userId).get();
+        TokenDTO tokenDTO = jwtProvider.generateTokenByUser(user);
+        return UserConverter.toResponseDTO(user, tokenDTO);
     }
 }

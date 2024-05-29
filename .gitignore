@@ -19,7 +19,7 @@ bin/
 
 ### 시크릿 ###
 application-secret.yml
-
+application-jwt.yml
 
 ### IntelliJ IDEA ###
 .idea
