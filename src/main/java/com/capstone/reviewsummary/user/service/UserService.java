@@ -5,7 +5,6 @@ import com.capstone.reviewsummary.user.dto.GoogleSignUpDto;
 import com.capstone.reviewsummary.user.dto.UserResponseDTO;
 
 public interface UserService {
-    boolean checkUser(String userId);
     void googleSignUp(GoogleDto.UserInfoDto userInfo);
     UserResponseDTO.ResponseDTO login(String accessCode);
 }

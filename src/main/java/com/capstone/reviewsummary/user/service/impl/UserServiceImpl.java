@@ -21,10 +21,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final GoogleService googleService;
     private final JwtProvider jwtProvider;
-    @Override
-    public boolean checkUser(String userId){
-        return userRepository.findBySocialId(userId).isPresent();
-    }
 
     @Override
     public void googleSignUp(GoogleDto.UserInfoDto userInfo){
@@ -44,6 +40,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findBySocialId(userInfo.getSocialId()).get();
         TokenDTO tokenDTO = jwtProvider.generateTokenByUser(user);
         return UserConverter.toResponseDTO(user, tokenDTO);
+    }
+
+    public boolean checkUser(String userId){
+        return userRepository.findBySocialId(userId).isPresent();
     }
 
 }
